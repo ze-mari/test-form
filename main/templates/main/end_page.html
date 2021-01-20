@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3 class="text-center mt-5 mb-5">{{ form_obj.form.name }}</h3>
+
+<div class="row">
+  <div class="col-md-3">
+
+  </div>
+  <div class="col-md-6">
+    <h3 class="text-center mb-5 mt-5">{{ form_obj.end_page.name }}</h3>
+    {% autoescape off %}
+    {{ end_page }}
+    {% endautoescape %}
+    <br>
+    <a href="{% url 'base' %}"><button class="btn btn-success mt-3">Перейти на главную страницу</button></a>
+  </div>
+</div>
+
+{% endblock %}
