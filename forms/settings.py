@@ -31,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-SITE_URI = 'http://127.0.0.1:8000/'
+SITE_URI = 'https://sheltered-depths-97835.herokuapp.com'
 
 # Application definition
 
