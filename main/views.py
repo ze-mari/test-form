@@ -2,7 +2,7 @@ import random
 import hashlib
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.views import View
 from django.conf import settings
@@ -115,18 +115,15 @@ class FormsView(View):
                 request.session['code'] = code
                 text = form_obj.message.text
                 confirm_url = (settings.SITE_URI + 'forms/{slug}/confirm_url').format(slug=slug)
-                if 'link' in str(text):
-                    text = text.format(key=code, link=confirm_url)
+                if 'link' in text:
+                    html_text = text.format(key=code, link=confirm_url)
                 else:
-                    text = text.format(key=code)
-                send_mail(
-                    subject=form_obj.message.topic,
-                    message=text,
-                    from_email='django3django3@gmail.com',
-                    recipient_list=[main_form.cleaned_data['email'], ],
-                    fail_silently=False,
-                    html_message=text,
-                )
+                    html_text = text.format(key=code)
+                print(html_text)
+                print(type(html_text))
+                msg = EmailMessage(form_obj.message.topic, html_text, to=[main_form.cleaned_data['email']])
+                msg.content_subtype = "html"
+                msg.send(fail_silently=False)
                 return HttpResponseRedirect(f'/forms/{slug}/confirmation')
             return HttpResponseRedirect(f'forms/{slug}/start')
         elif stage == 'send_code':

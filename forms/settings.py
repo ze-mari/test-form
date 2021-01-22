@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +29,7 @@ SECRET_KEY = 'jrpitqqp0l#mmr34ayj#lx0+ezc@k&9*2j54vhn5to#ng6y6m7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 SITE_URI = 'http://127.0.0.1:8000/'
 
@@ -76,15 +80,19 @@ WSGI_APPLICATION = 'forms.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'test_form',
+#         'USER': 'shopuser',
+#         'PASSWORD': 'shopuser',
+#         'HOST': '127.0.0.1',
+#         'PORT': 5432,
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_form',
-        'USER': 'shopuser',
-        'PASSWORD': 'shopuser',
-        'HOST': '127.0.0.1',
-        'PORT': 5432,
-    }
+    'default': dj_database_url.config()
 }
 
 
@@ -124,9 +132,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+django_heroku.settings(locals())
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'django3django3@gmail.com'
+
+SERVER_EMAIL = 'django3django3@gmail.com'
 
 EMAIL_HOST = 'smtp.gmail.com'
 
@@ -138,6 +153,5 @@ EMAIL_PORT = 587
 
 EMAIL_USE_TLS = True
 
-EMAIL_USE_SSL = False
 
 
